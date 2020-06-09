@@ -49,6 +49,9 @@ import Workspace from './Workspace';
 import ResourceBrowser from './ResourceBrowser';
 import ErrorWorkspacePlaceholder from './Workspace/ErrorWorkspacePlaceholder';
 import './index.less';
+import { userHasMethodOnProject } from './authMappingUtils';
+import NotFound from './components/NotFound'
+
 
 // monitor user's session
 sessionMonitor.start();
@@ -326,8 +329,24 @@ async function init() {
                     <Route
                       path='/:project'
                       component={
-                        props => <ProtectedContent component={ProjectSubmission} {...props} />
+                        (props) => {
+                          const projectFilter = (project, userAuthMapping) => {
+                            if (
+                              userHasMethodOnProject("create", project, userAuthMapping)
+                              || userHasMethodOnProject("update", project, userAuthMapping)
+                            ) {
+                              return (<ProtectedContent component={ProjectSubmission} {...props} />);
+                            } else {
+                              return <NotFound/>;
+                            }
+                          };
+                          return projectFilter(props.match.params.project, props.userAuthMapping);
+                        }
                       }
+                    />
+                    <Route
+                      path="*"
+                      component={NotFound}
                     />
                   </Switch>
                 </div>
