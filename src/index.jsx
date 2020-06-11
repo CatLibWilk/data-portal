@@ -332,7 +332,7 @@ async function init() {
                         (props) => {
                           const projectFilter = (project, userAuthMapping) => {
                             if (
-                              userHasMethodOnProject("create", project, userAuthMapping)
+                                 userHasMethodOnProject("create", project, userAuthMapping)
                               || userHasMethodOnProject("update", project, userAuthMapping)
                             ) {
                               return (<ProtectedContent component={ProjectSubmission} {...props} />);
