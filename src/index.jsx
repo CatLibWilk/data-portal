@@ -340,7 +340,7 @@ async function init() {
                               return <NotFound/>;
                             }
                           };
-                          return projectFilter(props.match.params.project, props.userAuthMapping);
+                          return projectFilter(props.match.params.project, store.getState().userAuthMapping);
                         }
                       }
                     />
